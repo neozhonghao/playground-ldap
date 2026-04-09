@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - {{ user.full_name or user.username }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-3">
+        <a href="{{ url_for('directory') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Directory
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Profile Card -->
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-person-circle text-primary" style="font-size: 6rem;"></i>
+                </div>
+                <h3 class="card-title">{{ user.full_name or user.username }}</h3>
+                <p class="text-muted">{{ user.title or 'Employee' }}</p>
+                
+                {% if user.department %}
+                <p>
+                    <span class="badge bg-primary">{{ user.department }}</span>
+                </p>
+                {% endif %}
+                
+                {% if is_own_profile %}
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle"></i> This is your profile
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profile Details -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-lines-fill"></i> Contact Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-person"></i> Username:
+                    </div>
+                    <div class="col-sm-8">
+                        {{ user.username }}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-envelope"></i> Email:
+                    </div>
+                    <div class="col-sm-8">
+                        {% if user.email %}
+                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        {% else %}
+                        <span class="text-muted">Not available</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if user.phone %}
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-telephone"></i> Phone:
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.mobile %}
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-phone"></i> Mobile:
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="tel:{{ user.mobile }}">{{ user.mobile }}</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Employment Details -->
+        <div class="card mt-3">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-briefcase"></i> Employment Details
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-building"></i> Department:
+                    </div>
+                    <div class="col-sm-8">
+                        {{ user.department or 'Not specified' }}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-person-badge"></i> Title:
+                    </div>
+                    <div class="col-sm-8">
+                        {{ user.title or 'Not specified' }}
+                    </div>
+                </div>
+                
+                {% if user.employee_id %}
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-hash"></i> Employee ID:
+                    </div>
+                    <div class="col-sm-8">
+                        {{ user.employee_id }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if user.manager %}
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-person-check"></i> Manager:
+                    </div>
+                    <div class="col-sm-8">
+                        {{ user.manager }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Additional Information -->
+        <div class="card mt-3">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle"></i> Additional Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">
+                        <i class="bi bi-fingerprint"></i> Distinguished Name:
+                    </div>
+                    <div class="col-sm-8">
+                        <code class="text-muted small">{{ user.dn }}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

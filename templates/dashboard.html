@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Employee Directory{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </h1>
+    </div>
+</div>
+
+<!-- Welcome Banner -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-info">
+            <h4 class="alert-heading">
+                <i class="bi bi-hand-wave"></i> Welcome, {{ current_user.full_name or current_user.username }}!
+            </h4>
+            <p>Access the employee directory, search for colleagues, and view profiles.</p>
+            <hr>
+            <p class="mb-0">
+                <small><i class="bi bi-clock"></i> {{ current_time.strftime('%A, %B %d, %Y at %I:%M %p') }}</small>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card border-primary">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="card-title text-muted">Total Employees</h5>
+                        <h2 class="card-text">{{ total_employees }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-3">
+        <div class="card border-success">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-diagram-3-fill text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="card-title text-muted">Departments</h5>
+                        <h2 class="card-text">{{ total_departments }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row">
+    <div class="col-12">
+        <h3 class="mb-3">
+            <i class="bi bi-lightning"></i> Quick Actions
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-search text-primary" style="font-size: 3rem;"></i>
+                <h5 class="card-title mt-3">Search Employees</h5>
+                <p class="card-text">Find colleagues by name, email, or department</p>
+                <a href="{{ url_for('search') }}" class="btn btn-primary">
+                    <i class="bi bi-search"></i> Search
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-people text-success" style="font-size: 3rem;"></i>
+                <h5 class="card-title mt-3">Browse Directory</h5>
+                <p class="card-text">View all employees in the organization</p>
+                <a href="{{ url_for('directory') }}" class="btn btn-success">
+                    <i class="bi bi-list"></i> Browse
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-person-circle text-info" style="font-size: 3rem;"></i>
+                <h5 class="card-title mt-3">My Profile</h5>
+                <p class="card-text">View and manage your profile information</p>
+                <a href="{{ url_for('my_profile') }}" class="btn btn-info">
+                    <i class="bi bi-person"></i> View Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity (Placeholder) -->
+<div class="row mt-4">
+    <div class="col-12">
+        <h3 class="mb-3">
+            <i class="bi bi-clock-history"></i> System Information
+        </h3>
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-2">
+                    <i class="bi bi-server text-success"></i> 
+                    <strong>LDAP Connection:</strong> Active
+                </p>
+                <p class="mb-2">
+                    <i class="bi bi-shield-check text-primary"></i> 
+                    <strong>Security:</strong> SSL/TLS Enabled, CSRF Protection Active
+                </p>
+                <p class="mb-0">
+                    <i class="bi bi-person-badge text-info"></i> 
+                    <strong>Your Role:</strong> Authenticated User
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
