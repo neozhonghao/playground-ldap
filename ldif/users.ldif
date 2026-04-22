@@ -1,0 +1,69 @@
+dn: uid=jdoe,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: John Doe
+sn: Doe
+uid: jdoe
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/jdoe
+mail: jdoe@example.com
+ou: Engineering
+userPassword: password123
+
+dn: uid=jsmith,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: Jane Smith
+sn: Smith
+uid: jsmith
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/jsmith
+mail: jsmith@example.com
+ou: Marketing
+userPassword: password123
+
+dn: uid=bjohnson,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: Bob Johnson
+sn: Johnson
+uid: bjohnson
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/bjohnson
+mail: bjohnson@example.com
+ou: Sales
+userPassword: password123
+
+dn: uid=achen,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: Alice Chen
+sn: Chen
+uid: achen
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/achen
+mail: achen@example.com
+ou: Engineering
+userPassword: password123
+
+dn: uid=mbrown,ou=users,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+cn: Mike Brown
+sn: Brown
+uid: mbrown
+uidNumber: 10005
+gidNumber: 10005
+homeDirectory: /home/mbrown
+mail: mbrown@example.com
+ou: HR
+userPassword: password123

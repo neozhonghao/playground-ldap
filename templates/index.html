@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Team Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <!-- Left Column: Who's Online -->
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="bi bi-circle-fill"></i> Who's Online</h5>
+                <small>Active in the last 30 minutes</small>
+            </div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                {% if online_users %}
+                    <ul class="list-unstyled">
+                        {% for user in online_users %}
+                        <li class="mb-2">
+                            <span class="online-indicator online"></span>
+                            <a href="{{ url_for('profile', username=user.username) }}">
+                                {{ user.full_name }}
+                            </a>
+                            <br>
+                            <small class="text-muted ms-3">{{ user.department }}</small>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No one else is online right now.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Welcome & Status -->
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h3>Welcome, {{ current_user.full_name }}! 👋</h3>
+                <p class="text-muted mb-0">
+                    <i class="bi bi-envelope"></i> {{ current_user.email }}<br>
+                    <i class="bi bi-building"></i> {{ current_user.department or 'No department' }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Status Message Card -->
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-chat-left-text"></i> Your Status</h5>
+            </div>
+            <div class="card-body">
+                {% if user_status %}
+                    <div class="alert alert-info mb-3">
+                        <strong>Current status:</strong> {{ user_status.message }}
+                        <br>
+                        <small class="text-muted">Updated {{ user_status.updated_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                    </div>
+                {% else %}
+                    <p class="text-muted">You haven't set a status yet.</p>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('update_status') }}">
+                    <div class="input-group">
+                        <input type="text" 
+                               class="form-control" 
+                               name="status" 
+                               placeholder="What are you working on?" 
+                               maxlength="200"
+                               value="{{ user_status.message if user_status else '' }}">
+                        <button class="btn btn-primary" type="submit">
+                            Update Status
+                        </button>
+                    </div>
+                    <small class="text-muted">Let your team know what you're up to</small>
+                </form>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Quick Links</h5>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('directory') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> Browse Team Directory
+                    </a>
+                    <a href="{{ url_for('profile') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-person"></i> View My Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-refresh who's online every 30 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 30000);
+</script>
+{% endblock %}

@@ -1,162 +1,97 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - {{ user.full_name or user.username }}{% endblock %}
+{% block title %}{{ user.full_name }} - Profile{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{{ url_for('directory') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Directory
-        </a>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Profile Card -->
-    <div class="col-lg-4 mb-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="bi bi-person-circle text-primary" style="font-size: 6rem;"></i>
-                </div>
-                <h3 class="card-title">{{ user.full_name or user.username }}</h3>
-                <p class="text-muted">{{ user.title or 'Employee' }}</p>
-                
-                {% if user.department %}
-                <p>
-                    <span class="badge bg-primary">{{ user.department }}</span>
-                </p>
-                {% endif %}
-                
-                {% if is_own_profile %}
-                <div class="alert alert-info mt-3">
-                    <i class="bi bi-info-circle"></i> This is your profile
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    
-    <!-- Profile Details -->
-    <div class="col-lg-8">
-        <div class="card">
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-person-lines-fill"></i> Contact Information
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-person"></i> Username:
-                    </div>
-                    <div class="col-sm-8">
-                        {{ user.username }}
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-envelope"></i> Email:
-                    </div>
-                    <div class="col-sm-8">
-                        {% if user.email %}
-                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle"></i> 
+                        {% if is_own_profile %}
+                            My Profile
                         {% else %}
-                        <span class="text-muted">Not available</span>
+                            User Profile
                         {% endif %}
-                    </div>
+                    </h4>
+                    {% if user.is_online %}
+                        <span class="badge bg-success">
+                            <i class="bi bi-circle-fill"></i> Online
+                        </span>
+                    {% else %}
+                        <span class="badge bg-secondary">Offline</span>
+                    {% endif %}
                 </div>
-                
-                {% if user.phone %}
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-telephone"></i> Phone:
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
-                    </div>
-                </div>
-                {% endif %}
-                
-                {% if user.mobile %}
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-phone"></i> Mobile:
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="tel:{{ user.mobile }}">{{ user.mobile }}</a>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        
-        <!-- Employment Details -->
-        <div class="card mt-3">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-briefcase"></i> Employment Details
-                </h5>
             </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-building"></i> Department:
-                    </div>
-                    <div class="col-sm-8">
-                        {{ user.department or 'Not specified' }}
-                    </div>
+                <!-- User Information -->
+                <div class="mb-4">
+                    <h3>{{ user.full_name }}</h3>
+                    <p class="text-muted">@{{ user.username }}</p>
                 </div>
-                
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-person-badge"></i> Title:
-                    </div>
-                    <div class="col-sm-8">
-                        {{ user.title or 'Not specified' }}
-                    </div>
+
+                <div class="mb-3">
+                    <h6><i class="bi bi-envelope"></i> Email</h6>
+                    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
                 </div>
-                
-                {% if user.employee_id %}
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-hash"></i> Employee ID:
-                    </div>
-                    <div class="col-sm-8">
-                        {{ user.employee_id }}
+
+                <div class="mb-3">
+                    <h6><i class="bi bi-building"></i> Department</h6>
+                    <p>{{ user.department or 'Not specified' }}</p>
+                </div>
+
+                <div class="mb-3">
+                    <h6><i class="bi bi-clock"></i> Last Seen</h6>
+                    <p>
+                        {% if user.last_seen %}
+                            {{ user.last_seen.strftime('%Y-%m-%d %H:%M UTC') }}
+                        {% else %}
+                            Never
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Status Message -->
+                {% if status %}
+                <div class="alert alert-info">
+                    <h6><i class="bi bi-chat-left-text"></i> Status</h6>
+                    <p class="mb-0">{{ status.message }}</p>
+                    <small class="text-muted">Updated {{ status.updated_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                </div>
+                {% endif %}
+
+                <!-- Update Status (only for own profile) -->
+                {% if is_own_profile %}
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6>Update Your Status</h6>
+                        <form method="POST" action="{{ url_for('update_status') }}">
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control" 
+                                       name="status" 
+                                       placeholder="What are you working on?" 
+                                       maxlength="200"
+                                       value="{{ status.message if status else '' }}">
+                                <button class="btn btn-primary" type="submit">Update</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 {% endif %}
-                
-                {% if user.manager %}
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-person-check"></i> Manager:
-                    </div>
-                    <div class="col-sm-8">
-                        {{ user.manager }}
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-        
-        <!-- Additional Information -->
-        <div class="card mt-3">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-info-circle"></i> Additional Information
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">
-                        <i class="bi bi-fingerprint"></i> Distinguished Name:
-                    </div>
-                    <div class="col-sm-8">
-                        <code class="text-muted small">{{ user.dn }}</code>
-                    </div>
+
+                <!-- Back Button -->
+                <div class="mt-4">
+                    <a href="{{ url_for('directory') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Directory
+                    </a>
+                    {% if is_own_profile %}
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-house"></i> Dashboard
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
